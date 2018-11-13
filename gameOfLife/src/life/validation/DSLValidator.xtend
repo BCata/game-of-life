@@ -3,6 +3,8 @@
  */
 package life.validation
 
+import life.dSL.RulesOfLife
+import org.eclipse.xtext.validation.Check
 
 /**
  * This class contains custom validation rules. 
@@ -10,16 +12,24 @@ package life.validation
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class DSLValidator extends AbstractDSLValidator {
-	
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					DSLPackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+
+	@Check
+	def checkConditions(RulesOfLife rules) {
+		if(rules.aliveCondition > 8 || rules.lowDeathCondition > 8 || rules.highDeathCondition > 8){
+			error("Condition cannot be greater than number of neighbours", null)
+		} else {
+			if(rules.lowDeathCondition > rules.highDeathCondition){
+				error("Low death condition cannot be greater than high death condition", null);
+			}
+			
+			if(rules.aliveCondition < rules.lowDeathCondition || rules.aliveCondition > rules.highDeathCondition){
+				info("Life and death are mutually exclusive", null);
+			}
+			
+			if(rules.lowDeathCondition == rules.highDeathCondition){
+				warning("Low and high death conditions are equal", null);
+			}
+		}
+	}
 	
 }

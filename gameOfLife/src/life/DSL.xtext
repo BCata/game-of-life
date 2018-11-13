@@ -2,15 +2,19 @@ grammar life.DSL with org.eclipse.xtext.common.Terminals
 
 generate dSL "http://www.DSL.life"
 
-Game:
-	Grid += Cell*
+
+RulesOfLife:
+	'LowDeathCondition' lowDeathCondition = INT
+	'HighDeathCondition' highDeathCondition = INT
+	'AliveCondition' aliveCondition = INT
 ;
 
-Cell:
-	state = State
-	neighbours += [Cell]+
-;
-enum State: 
-	Dead = '0' |
-	Alive = '255'
-;
+
+//Cell:
+//	'CurrentValue:' current_value = Value
+//	'Total:' total = INT
+//;
+//enum Value:
+//	on_value = '255' |
+//	off_value = '0'
+//;
